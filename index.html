@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5 Lab Workbook</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #5a5a5a;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Week 5 Lab Workbook</h1>
+    
+    <p><strong>Exercise 1: Logical Operators</strong></p>
+
+    <p>In the lecture notes, we saw logical operators that acted on pairs of boolean values to produce other booleans. One such operator was <code>and</code>.</p>
+
+    <p>Since there are only two distinct boolean values (True and False), and there are two arguments in each call using the <code>and</code> operator, there will be combinations that define the effect of this operator. Compute and print the truth value of these four combinations.</p>
+
+    <pre>
+    A   B   A and B
+    True    True    True
+    True    False   False
+    False   True    False
+    False   False   False
+    </pre>
+
+    <p>The implies operator (sometimes denoted with the symbol ⇒) is not implemented in a standard Python environment. It can be defined with the following truth table:</p>
+
+    <pre>
+    A   B   A ⇒ B
+    True    True    True
+    True    False   False
+    False   True    True
+    False   False   True
+    </pre>
+
+    <p>Using built-in logical operators, verify that for any boolean values A and B, the statement <code>A ⇒ B</code> is equivalent to the statement <code>B or not A</code>.</p>
+
+    <p>Write a function <code>implies</code> that will accept any two boolean values, A and B, and return the boolean value of the statement <code>A ⇒ B</code>.</p>
+
+    <pre>
+    def implies(A, B):
+        return B or not A
+    </pre>
+
+    <p>Test this function by calling it for all four combinations of boolean values that can be returned to A and B.</p>
+
+    <p>Now write a function <code>not_implies</code> that, for any booleans A and B, returns the negation of the call <code>implies(A, B)</code>.</p>
+
+    <pre>
+    def not_implies(A, B):
+        return not implies(A, B)
+    </pre>
+
+    <p>Test this function with all four combinations of inputs.</p>
+
+    <p>We now wish to test out these functions by applying them to mathematical results (results that use implications).</p>
+
+    <p>For integers, we say that <code>a divides m</code> (and write <code>a | m</code>) if there exists some integer <code>k</code> such that <code>a * k = m</code>.</p>
+
+    <p>Write a function <code>divides</code> which accepts two integers, <code>a</code> and <code>m</code>, and returns a boolean corresponding to the truth value of the statement <code>'a divides m'</code>.</p>
+
+    <pre>
+    def divides(a, m):
+        return m % a == 0
+    </pre>
+
+    <p>Test that this function works by evaluating it for one combination of integers that results in <code>True</code> being returned, and one combination that gives <code>False</code>.</p>
+
+    <p>Observe the following result:</p>
+
+    <p><strong>Theorem:</strong> Let <code>a</code> and <code>b</code> be integers. If <code>a divides m</code> and <code>b divides n</code>, then <code>m divides n</code>.</p>
+
+    <p>According to this result, the statement <code>If 7 divides 14 and 2 divides 4, then 14 divides 56</code> is true, as is the statement <code>If 7 divides 14 and 2 divides 3, then 14 divides 42</code>.</p>
+
+    <p>Using the <code>implies</code> and <code>divides</code> functions defined above, write a function <code>test_theorem</code> that accepts four integers, <code>a</code>, <code>b</code>, <code>m</code>, and <code>n</code>, and returns the boolean value of the statement given in the above theorem.</p>
+
+    <pre>
+    def test_theorem(a, b, m, n):
+        return implies(divides(a, m) and divides(b, n), divides(m, n))
+    </pre>
+
+    <p>Test this function by calling it for a few well-chosen examples.</p>
+
+    <p>Now consider the following claim, which is different from the result shown above:</p>
+
+    <p><strong>Claim:</strong> Let <code>a</code> and <code>b</code> be integers. If <code>a divides m</code> and <code>b divides m</code>, then <code>n divides m</code>.</p>
+
+    <p>Write a function <code>test_claim</code> that accepts three integers, <code>a</code>, <code>b</code>, and <code>n</code>, and returns the boolean value of the statement given in the above claim.</p>
+
+    <pre>
+    def test_claim(a, b, n):
+        return implies(divides(a, n) and divides(b, n), divides(n, a))
+    </pre>
+
+    <p>Find at least one combination of integers <code>a</code>, <code>b</code>, and <code>n</code> such that the function <code>test_claim</code> returns a boolean value of <code>False</code>.</p>
+
+    <p>Since this function returns the truth value of the above claim (for the called values of <code>a</code>, <code>b</code>, and <code>n</code>), this <code>False</code> output disproves the statement.</p>
+
+    <p><strong>Exercise 2: Roots of Cubics</strong></p>
+
+    <p>The discriminant of the cubic polynomial given by <code>ax³ + bx² + cx + d</code> is:</p>
+
+    <pre>
+    discriminant = b² - 3ac
+    </pre>
+
+    <p>The discriminant gives us information about the roots of the cubic:</p>
+    <ul>
+        <li>If discriminant > 0, then the cubic has 3 distinct real roots;</li>
+        <li>If discriminant = 0, then the cubic has 2 distinct complex roots and 1 real root;</li>
+        <li>If discriminant < 0, then the cubic has 3 real roots, at least 2 of which are the same.</li>
+    </ul>
+
+    <p>Write a function <code>has_three_real_roots</code> that accepts four floats <code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code> that are representative of the coefficients of a cubic polynomial, and returns a value of <code>True</code> if the corresponding cubic has 3 distinct real roots, and <code>False</code> otherwise.</p>
+
+    <pre>
+    def has_three_real_roots(a, b, c, d):
+        discriminant = b**2 - 3*a*c
+        return discriminant > 0
+    </pre>
+
+    <p>Test this function on the polynomials given in the problem.</p>
+
+    <p><strong>Exercise 3: Monte Carlo Methods</strong></p>
+
+    <p>A Monte Carlo method is an algorithm that approximates the area of a region by taking a large sample of uniformly distributed points over an area that covers that region, and evaluating the proportion of points that fall inside it.</p>
+
+    <p>For instance, consider the region bounded by the equation <code>x² + y² = 1</code> (a unit circle). A Monte Carlo method should return a value approximately equal to <code>π</>.</p>
+
+    <pre>
+    from random import uniform
+
+    def inside_circle(x):
+        return 1 if x[0]**2 + x[1]**2 <= 1 else 0
+    </pre>
+
+    <p>Now consider the region bounded by the conditions for a crescent shape. Define
